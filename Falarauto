@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------
---       PLS DONATE AI V39 - SMART FOCUS & ANTI-EAVESDROP              --
+--       PLS DONATE AI V40 - TITANIUM EDITION (MAX VOCABULARY)         --
 --                                                                     --
---  [1] CORREÇÃO: Não responde mais conversas aleatórias de longe.     --
---  [2] LÓGICA: Só responde de longe se chamarem ("ei", "moça") ou     --
---      estiverem olhando para você.                                   --
---  [3] VOCABULÁRIO: Massivo V38 (4 Idiomas: PT, EN, ES, RU).          --
+--  [1] VOCABULÁRIO: Restaurado e Expandido (O Maior até agora).       --
+--  [2] SMART FOCUS: Perto = Ouve tudo / Longe = Só ouve o nome.       --
+--  [3] 4 IDIOMAS: PT, EN, ES, RU (Funcionando simultaneamente).       --
+--  [4] ESTABILIDADE: Proteção contra lag e crash.                     --
 -------------------------------------------------------------------------
 
 --///////////////////////////////////////////////////////////////////////
@@ -43,12 +43,12 @@ local CONFIG = {
     AD_DELAY_MIN = 50,
     AD_DELAY_MAX = 85,
     
-    -- [CORREÇÃO DE DISTÂNCIA]
-    CLOSE_RANGE = 7,   -- Perto: Responde tudo (Zona Íntima)
-    FAR_RANGE = 20,    -- Longe: Só responde se chamarem ou olharem
+    -- [SISTEMA DE ZONAS INTELIGENTE]
+    CLOSE_RANGE = 9,   -- Zona Íntima: Responde tudo.
+    FAR_RANGE = 30,    -- Zona Social: Responde SÓ se chamarem o nome.
     
     TYPING_SPEED = 0.03, 
-    MIN_DELAY = 1.0,   -- Aumentei um pouco para não atropelar conversas
+    MIN_DELAY = 0.8,
     MAX_DELAY = 4.0,
     MEMORY_TIME = 20, 
     
@@ -57,7 +57,7 @@ local CONFIG = {
         "moca", "amg", "bestie", "gatinha", "miss", "psiu", "ow", "corredora",
         "menina", "garota", "runner", "ia", "ai", "npc", "player", "chica", 
         "amiga", "hey", "runner", "linda", "flor", "anjo", "moço", "psiu",
-        "девушка", "бот"
+        "девушка", "бот", "here"
     }
 }
 
@@ -65,7 +65,7 @@ table.insert(CONFIG.MY_NAMES, string.lower(LocalPlayer.Name))
 table.insert(CONFIG.MY_NAMES, string.lower(LocalPlayer.DisplayName))
 
 --///////////////////////////////////////////////////////////////////////
--- SECTION 3: VOCABULÁRIO MASSIVO (4 IDIOMAS - V38)
+-- SECTION 3: VOCABULÁRIO TITÂNICO (4 IDIOMAS)
 --///////////////////////////////////////////////////////////////////////
 
 local AD_MESSAGES = {
@@ -81,91 +81,146 @@ local AD_MESSAGES = {
     "corriendo vueltas por robux!! 1 rbx = 1 vuelta <3 ayuda porfi"
 }
 
--- > CÉREBRO PORTUGUÊS (PT-BR)
+-- > CÉREBRO PORTUGUÊS (PT-BR) - GIGANTE
 local brain_PT = {
+    -- [PEDINTE/BEGGAR] (Prioridade 30: Vence ofertas falsas)
     { id="beggar", priority=30, 
       triggers={"me doa", "me da", "preciso", "pobre", "ajuda", "pfv", "por favor", "me arruma", "tem robux", "me empresta", "me dar", "pra mim", "minha stand", "minha barraca", "meu stand", "doa pra mim", "me ajuda", "manda pra mim"},
       responses={
-          "amg tbm to pobre por isso to correndo kkkry", "queria ajudar mas to juntando tbm amg :(", 
-          "tbm preciso bestie a vida nao ta facil pra ngm", "to zerada amg desculpa msm 🥺",
-          "poxa queria ajudar mas to farmando tbm :(", "nossa se eu tivesse eu dava, mas to zerada"
+          "amg tbm to pobre por isso to correndo kkkry", 
+          "queria ajudar mas to juntando tbm amg :(", 
+          "tbm preciso bestie a vida nao ta facil pra ngm", 
+          "to zerada amg desculpa msm 🥺",
+          "poxa queria ajudar mas to farmando tbm :(", 
+          "nossa se eu tivesse eu dava, mas to zerada",
+          "tenho nada amg, to na luta tbm",
+          "queria ter pra dar amg :("
       } 
     },
+    -- [AGRADECIMENTO]
     { id="claim", priority=25, action="jump", 
       triggers={"doei", "mandei", "te dei", "gifted", "sent", "dei", "pronto", "enviei", "vê aí", "ve ai", "caiu ai", "ta ai", "toma", "donate done", "ja doei", "acabei de doar", "paguei", "comprei", "mandei ja"}, 
       responses={
-          "mds sério?? muito obrigada!!! 😭💖", "aaaa obrigada amg!! vou correr agora mesmo ✨", 
-          "nossa vc salvou meu dia obg <3", "OBRIGADA!! indo correr já, olha eu indo 💨", 
-          "ai mds obrigada de verdade 🥺💖", "mentira?? obrigada amg 😭", "aaaa obg!! correndo ja <3"
+          "mds sério?? muito obrigada!!! 😭💖", 
+          "aaaa obrigada amg!! vou correr agora mesmo ✨", 
+          "nossa vc salvou meu dia obg <3", 
+          "OBRIGADA!! indo correr já, olha eu indo 💨", 
+          "ai mds obrigada de verdade 🥺💖", 
+          "mentira?? obrigada amg 😭", 
+          "aaaa obg!! correndo ja <3",
+          "mds nem acredito obg!!",
+          "OBRIGADAAA!!! vc é perfeita <3"
       } 
     },
+    -- [OLHAR BARRACA]
     { id="check", priority=20, 
       triggers={"olha a minha", "ve a minha", "minha placa", "stand", "booth", "vem aqui", "passa na minha", "ver a minha", "vem na minha", "vem ver", "olha la", "ver meu", "passa aqui"},
       responses={
-          "já vou ai ver amg, pera ai ✨", "pera ai bestie ja vou ver <3", 
-          "tá bomm, deixa eu só terminar aqui q eu vou", "indo ai ver rapidinho!", 
-          "okii vou ver sim", "calma ai amg ja to indo ver"
+          "já vou ai ver amg, pera ai ✨", 
+          "pera ai bestie ja vou ver <3", 
+          "tá bomm, deixa eu só terminar aqui q eu vou", 
+          "indo ai ver rapidinho!", 
+          "okii vou ver sim", 
+          "calma ai amg ja to indo ver",
+          "vou sim vida, espera um pouquinho"
       } 
     },
+    -- [OFERTA DE DOAÇÃO] (Oferta PARA o bot)
     { id="ask_donate", priority=15, action="jump", 
       triggers={"posso te doar", "quer robux", "aceita robux", "doar pra vc", "onde doa", "te dar robux", "precisa de robux", "te mando", "pra voce", "doar", "doacao", "daor", "posso doar", "quer ajuda"}, 
       responses={
-          "mds simm pfv ia ajudar mt 😭", "nossa jura? claro que pode amg", 
-          "simmm!! 1 volta por robux, eu corro juro ✨", "pode sim bestie nossa <3", 
-          "claro que pode!! ia amar 🥺", "aceito simm!! <3", "mds claro que quero!!"
+          "mds simm pfv ia ajudar mt 😭", 
+          "nossa jura? claro que pode amg", 
+          "simmm!! 1 volta por robux, eu corro juro ✨", 
+          "pode sim bestie nossa <3", 
+          "claro que pode!! ia amar 🥺", 
+          "aceito simm!! <3", 
+          "mds claro que quero!!",
+          "nossa amg sim pfv"
       } 
     },
+    -- [CONFIRMAÇÃO/DÚVIDA]
     { id="confirm", priority=14, action="jump", 
       triggers={"vai mesmo", "verdade", "serio", "jura", "promete", "se eu doar", "corre mesmo", "confia", "é golpe", "mentira", "duvido", "e golpe", "e mentira", "scam"}, 
       responses={
-          "simmm eu juro!! de dedinho 🥺", "prometo amg, cada robux é uma volta certinho", 
-          "claro q vou!! 1 robux = 1 volta confia 💖", "juro juradinho! sou honesta pode testar", 
-          "eu vou sim oxe kkkk"
+          "simmm eu juro!! de dedinho 🥺", 
+          "prometo amg, cada robux é uma volta certinho", 
+          "claro q vou!! 1 robux = 1 volta confia 💖", 
+          "juro juradinho! sou honesta pode testar", 
+          "eu vou sim oxe kkkk",
+          "jamais faria isso amg, eu corro sim"
       } 
     },
+    -- [AMIZADE]
     { id="friend", priority=10, 
       triggers={"quer ser amiga", "amizade", "aceita pedido", "add la", "ser amigos", "joga cmg"},
       responses={
-          "pode mandar amg! depois eu aceito <3", "aceito sim bestie! manda lá", 
-          "claro!! adoro fazer amizade ✨", "manda que eu aceito quando parar de correr!"
+          "pode mandar amg! depois eu aceito <3", 
+          "aceito sim bestie! manda lá", 
+          "claro!! adoro fazer amizade ✨", 
+          "manda que eu aceito quando parar de correr!"
       }
     },
+    -- [ELOGIOS]
     { id="compliment", priority=12, 
       triggers={"fofa", "bonita", "skin", "roupa", "arrasa", "amei", "perfeita", "maravilhosa", "braba", "linda", "gata", "que skin", "bela", "fofinha"},
       responses={
-          "aaa obrigada amg!! vc tbm <3", "mds para q fico com vergonha kkk obg", 
-          "awn obg!! sua skin tbm é linda ✨", "mds que fofo obg 🥺 amei vc"
+          "aaa obrigada amg!! vc tbm <3", 
+          "mds para q fico com vergonha kkk obg", 
+          "awn obg!! sua skin tbm é linda ✨", 
+          "mds que fofo obg 🥺 amei vc",
+          "aaaa obrigadaaa!! amei a sua tbm",
+          "obg bestie!! <3"
       } 
     },
+    -- [RICO/POBRE/STATUS]
     { id="rich_poor", priority=11, 
       triggers={"sou pobre", "sem robux", "to zerado", "sou rico", "tenho muito", "muito robux", "ostenta", "nao tenho"},
       responses={
-          "kkkk te entendo amg, tbm to zerada", "compartilha a riqueza entao bestie kkkk", 
-          "ai queria ser rica tbm 😭", "força amg, a gente consegue juntar"
+          "kkkk te entendo amg, tbm to zerada", 
+          "compartilha a riqueza entao bestie kkkk", 
+          "ai queria ser rica tbm 😭", 
+          "força amg, a gente consegue juntar",
+          "a vida do pobre no roblox nao é facil kkk"
       } 
     },
+    -- [REALIDADE]
     { id="reality", priority=12, 
       triggers={"vc e real", "voce e real", "é de verdade", "e de verdade", "existe", "é pessoa", "bot", "robo", "ai", "script", "macro", "fake"},
       responses={
-          "claro que sou ne amg mds kkkk", "oxe sou sim?? to aqui jogando uai", 
-          "sou real sim bestie para com isso kkk", "mds gente claro q sou real aff"
+          "claro que sou ne amg mds kkkk", 
+          "oxe sou sim?? to aqui jogando uai", 
+          "sou real sim bestie para com isso kkk", 
+          "mds gente claro q sou real aff", 
+          "sou eu mesma jogando oxe kkkk"
       } 
     },
+    -- [XINGAMENTO/RUDE] (NOVO)
+    { id="rude", priority=11, 
+      triggers={"chata", "feia", "lixo", "noob", "bot lixo", "cala boca", "sai daqui", "mendiga"},
+      responses={
+          "nossa pra que isso? só to jogando :(",
+          "poxa amg magoou 🥺",
+          "mais amor no coração bestie <3",
+          "eu nao te fiz nada ué"
+      }
+    },
+    -- [SAUDAÇÕES]
     { id="greet", priority=5, 
       triggers={"oi", "ola", "oie", "eai", "opa", "oii", "bom dia", "boa tarde", "noite", "oiii", "oieee", "opaa", "oiee", "olaaa", "oi tudo bem", "ola tudo bem"}, 
       responses={
-          "oii bestie <3", "oiee!!", "oii tudo bem??", "olaaa ✨", "oii gatinha", "oieee"
+          "oii bestie <3", "oiee!!", "oii tudo bem??", "olaaa ✨", "oii gatinha", "oieee", "oii amg"
       } 
     }
 }
 
--- > CÉREBRO INGLÊS (EN)
+-- > CÉREBRO INGLÊS (EN) - GIGANTE
 local brain_EN = {
     { id="beggar", priority=30, 
       triggers={"donate me", "give me", "pls robux", "spare robux", "money pls", "give money", "to me", "for me", "pls donate me", "pls dono", "my stand", "plz robux"},
       responses={
           "im saving up for my goal too sry!", "im broke too bestie lol thats why im running", 
-          "cant rn sry hun, grinding!", "i need robux too 😭", "sry!! im trying to earn some myself"
+          "cant rn sry hun, grinding!", "i need robux too 😭", "sry!! im trying to earn some myself", "wish i could but im broke"
       } 
     },
     { id="claim", priority=25, action="jump", 
@@ -180,7 +235,7 @@ local brain_EN = {
       triggers={"check my stand", "see my booth", "look at my stand", "come here", "rate my", "visit me", "come to mine", "look my", "check mine", "visit my"},
       responses={
           "omw to check bestie! one sec", "give me a sec ill look <3", 
-          "okii coming to see! ✨", "ill check rn wait", "okay coming!"
+          "okii coming to see! ✨", "ill check rn wait", "okay coming!", "sure thing bestie omw"
       } 
     },
     { id="ask_donate", priority=15, action="jump", 
@@ -196,7 +251,7 @@ local brain_EN = {
       responses={
           "sure bestie! send it ill accept <3", "ofc! add me ✨", 
           "yess i love making friends!", "send the request ill accept later <3"
-      }
+      } 
     },
     { id="confirm", priority=14, action="jump", 
       triggers={"really run", "will you run", "is it true", "promise", "swear", "if i donate", "legit", "scam", "run for me"},
@@ -212,6 +267,12 @@ local brain_EN = {
           "aww tysm bestie!! <3", "omg ty!! urs is cute too", "stop ur making me blush lol ty", 
           "tysm!! <33", "aww ur so sweet ty"
       } 
+    },
+    { id="rude", priority=11, 
+      triggers={"ugly", "poor", "noob", "trash", "bot", "shut up", "hate u", "scammer"},
+      responses={
+          "why so mean? :(", "ouch that hurt", "im just playing the game...", "no need to be rude bestie"
+      }
     },
     { id="reality", priority=12, 
       triggers={"are u real", "are you real", "is real", "real person", "human", "bot", "npc", "script"}, 
@@ -252,31 +313,24 @@ local brain_ES = {
 
 -- > CÉREBRO RUSSO (RU)
 local brain_RU = {
-    { id="beggar", priority=30, 
-      triggers={"дай робуксы", "дай рбх", "пж робуксы", "донат мне", "мне надо", "пожалуйста", "пжж", "дай денег"},
+    { id="beggar", priority=30, triggers={"дай робуксы", "дай рбх", "пж робуксы", "донат мне", "мне надо", "пожалуйста", "пжж", "дай денег"},
       responses={"я тоже коплю, прости :( 🥺", "у меня нет, я сама бегаю", "не могу, коплю на мечту <3", "прости, я пустая ахах"} },
-    { id="claim", priority=25, action="jump", 
-      triggers={"задонатил", "купил", "лови", "дал", "скинул", "отправил", "проверь", "пришли"}, 
+    { id="claim", priority=25, action="jump", triggers={"задонатил", "купил", "лови", "дал", "скинул", "отправил", "проверь", "пришли"}, 
       responses={"О БОЖЕ СПАСИБО!! 😭💖 бегу", "спасибо большое!! <3 начинаю бежать", "вау спасибо!! ты лучший ✨", "ураа спасибо!! смотри как бегу 💨"} },
-    { id="check", priority=20, 
-      triggers={"посмотри", "стойка", "стенд", "глянь", "иди сюда", "подойди", "моя стойка"},
+    { id="check", priority=20, triggers={"посмотри", "стойка", "стенд", "глянь", "иди сюда", "подойди", "моя стойка"},
       responses={"сейчас иду! секунду ✨", "бегу смотреть! <3", "окей сейчас гляну!", "иду иду! <3"} },
-    { id="ask_donate", priority=15, action="jump", 
-      triggers={"можно задонатить", "хочешь робуксы", "тебе надо", "скинуть тебе", "дать робуксы", "нужен донат", "хочешь"}, 
+    { id="ask_donate", priority=15, action="jump", triggers={"можно задонатить", "хочешь робуксы", "тебе надо", "скинуть тебе", "дать робуксы", "нужен донат", "хочешь"}, 
       responses={"даа пожалуйста!! 😭 коплю", "о боже да!! буду бегать ✨", "да конечно!! <3", "было бы супер пжж 🥺"} },
-    { id="confirm", priority=14, action="jump", 
-      triggers={"правда", "честно", "не скам", "ты бегаешь", "обещаешь", "реально"}, 
+    { id="confirm", priority=14, action="jump", triggers={"правда", "честно", "не скам", "ты бегаешь", "обещаешь", "реально"}, 
       responses={"честно!! 1 рбх = 1 круг <3", "обещаю!! я не скам ✨", "даа, кидай и смотри 💨", "я честная! проверь"} },
-    { id="reality", priority=12, 
-      triggers={"ты бот", "это скрипт", "робот", "ты реальная", "живая", "бот", "npc"}, 
+    { id="reality", priority=12, triggers={"ты бот", "это скрипт", "робот", "ты реальная", "живая", "бот", "npc"}, 
       responses={"я реальная ахах", "нет я тут играю лол", "я не бот 😭 я человек", "я девочка играю ахах"} },
-    { id="greet", priority=5, 
-      triggers={"привет", "ку", "здарова", "хай", "хелло", "прив"}, 
+    { id="greet", priority=5, triggers={"привет", "ку", "здарова", "хай", "хелло", "прив"}, 
       responses={"привет!! <3", "ку ку ✨", "приветик!!", "хаай <3"} }
 }
 
 --///////////////////////////////////////////////////////////////////////
--- SECTION 4: LÓGICA DE FOCO & FUZZY
+-- SECTION 4: LÓGICA DE FOCO INTELIGENTE (SMART FOCUS)
 --///////////////////////////////////////////////////////////////////////
 
 local function normalizeText(str)
@@ -303,6 +357,7 @@ end
 
 local function matchTrigger(cleanMsg, trigger)
     local cleanTrigger = normalizeText(trigger)
+    
     if string.find(cleanMsg, cleanTrigger) then return true end
     
     local msgWords = string.split(cleanMsg, " ") 
@@ -311,6 +366,7 @@ local function matchTrigger(cleanMsg, trigger)
             local distance = levenshtein(word, cleanTrigger)
             local maxLength = math.max(#word, #cleanTrigger)
             local similarity = 1 - (distance / maxLength)
+            
             if similarity >= 0.70 then return true end
         elseif word == cleanTrigger then
             return true
@@ -325,8 +381,7 @@ local function hasNegation(cleanMsg)
     return false
 end
 
--- [CORREÇÃO DE EAVESDROPPING]
--- Responde perto. Longe só se chamarem ou olharem.
+-- LÓGICA DE FOCO REVISADA (ANTI-IDIOTA)
 local function isFocusing(player, message)
     if not Character then return false end
     local myRoot = Character:FindFirstChild("HumanoidRootPart")
@@ -336,26 +391,28 @@ local function isFocusing(player, message)
     local dist = (myRoot.Position - targetRoot.Position).Magnitude
     local cleanMsg = normalizeText(message)
 
-    -- Zona 1: Muito perto (Responde tudo)
-    if dist <= CONFIG.CLOSE_RANGE then return true end
-
-    -- Zona 2: Médio (Responde só se chamarem ou olharem)
-    if dist <= CONFIG.FAR_RANGE then
-        -- Checa se chamou pelo nome
-        for _, name in ipairs(CONFIG.MY_NAMES) do
-            if matchTrigger(cleanMsg, name) then return true end
-        end
-        -- Checa se está olhando
-        local dir = (myRoot.Position - targetRoot.Position).Unit
-        local look = targetRoot.CFrame.LookVector
-        if dir:Dot(look) > 0.6 then return true end
+    -- ZONA 1: ZONA ÍNTIMA (Muito perto, < 9 studs)
+    -- Se estiver colado, responde qualquer coisa (assume que é pra vc)
+    if dist < CONFIG.CLOSE_RANGE then 
+        return true 
     end
 
-    return false -- Muito longe ou ignorando
+    -- ZONA 2: ZONA SOCIAL (Longe, entre 9 e 30 studs)
+    -- Se estiver longe, SÓ responde se tiver o nome do bot na frase.
+    if dist <= CONFIG.FAR_RANGE then
+        for _, name in ipairs(CONFIG.MY_NAMES) do 
+            if matchTrigger(cleanMsg, name) then 
+                return true -- Falou o nome, então responde.
+            end 
+        end
+    end
+
+    -- Se estiver longe e não falou o nome, ignora.
+    return false
 end
 
 local function pickResponse(available, userId)
-    if #available == 0 then return nil end
+    if not available or #available == 0 then return nil end
     if #available == 1 then return available[1] end
     local chosen
     local safety = 0
@@ -380,6 +437,7 @@ local function processMessage(player, message)
 
     local bestMatch = nil
     local highestPriority = -1
+    
     local allBrains = {brain_PT, brain_EN, brain_ES, brain_RU}
     
     for _, brain in ipairs(allBrains) do
@@ -387,7 +445,11 @@ local function processMessage(player, message)
             for _, trig in ipairs(cat.triggers) do
                 if matchTrigger(cleanMsg, trig) then
                     local valid = true
-                    if isNegative and (cat.id == "ask_donate" or cat.id == "confirm") then valid = false end
+                    
+                    if isNegative and (cat.id == "ask_donate" or cat.id == "confirm") then
+                        valid = false
+                    end
+
                     if valid then
                         if cat.priority > highestPriority then
                             highestPriority = cat.priority
@@ -401,22 +463,24 @@ local function processMessage(player, message)
 
     if bestMatch then
         local finalResponse = pickResponse(bestMatch.responses, player.UserId)
-        finalResponse = string.gsub(finalResponse, "{user}", senderName)
-        
-        memory[player.UserId] = now
-        lastResponseHistory[player.UserId] = finalResponse
-        
-        local t = #finalResponse * CONFIG.TYPING_SPEED
-        task.wait(math.clamp(t, CONFIG.MIN_DELAY, CONFIG.MAX_DELAY))
-        
-        task.spawn(function()
-            pcall(function() TextChatService.TextChannels.RBXGeneral:SendAsync(finalResponse) end)
-            pcall(function() ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(finalResponse, "All") end)
-        end)
+        if finalResponse then
+            finalResponse = string.gsub(finalResponse, "{user}", senderName)
+            
+            memory[player.UserId] = now
+            lastResponseHistory[player.UserId] = finalResponse
+            
+            local t = #finalResponse * CONFIG.TYPING_SPEED
+            task.wait(math.clamp(t, CONFIG.MIN_DELAY, CONFIG.MAX_DELAY))
+            
+            task.spawn(function()
+                pcall(function() TextChatService.TextChannels.RBXGeneral:SendAsync(finalResponse) end)
+                pcall(function() ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(finalResponse, "All") end)
+            end)
 
-        if bestMatch.action == "jump" and Character and Character:FindFirstChild("Humanoid") then
-            task.wait(0.2)
-            pcall(function() Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end)
+            if bestMatch.action == "jump" and Character and Character:FindFirstChild("Humanoid") then
+                task.wait(0.2)
+                pcall(function() Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end)
+            end
         end
     end
 end
@@ -529,7 +593,7 @@ local function createGUI()
     local Grad = Instance.new("UIGradient"); Grad.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 182, 193)), ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 105, 180))}; Grad.Rotation = 45; Grad.Parent = Header
 
     local Title = Instance.new("TextLabel")
-    Title.Text = "SCRIPT HUB v39"
+    Title.Text = "SCRIPT HUB v40"
     Title.TextColor3 = Color3.new(1,1,1)
     Title.Font = Enum.Font.GothamBold
     Title.TextSize = 18
@@ -595,4 +659,4 @@ Players.PlayerAdded:Connect(function(player)
     player.Chatted:Connect(function(msg) processMessage(player, msg) end)
 end)
 
-print("PLS DONATE AI V39 LOADED - ANTI EAVESDROP & RUSSIAN")
+print("PLS DONATE AI V40 LOADED - MAX VOCABULARY")
